@@ -24,7 +24,6 @@ export default function Home() {
     setSelectedCountry(country);
   };
 
-  // ✅ Function to close modal
   const closeModal = () => {
     setSelectedCountry(null);
   };

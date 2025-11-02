@@ -66,6 +66,7 @@ export default function Favorites() {
                 <label
                   htmlFor={`fav-${c.cca3}`}
                   className={styles.favoriteLbl}
+                  onClick={(e) => e.stopPropagation()}
                 >
                   <input
                     type="checkbox"

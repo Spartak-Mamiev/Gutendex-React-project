@@ -1,6 +1,7 @@
-import { useContext, useEffect, useState } from "react";
-import { CountriesContext } from "../CountriesContext";
-import styles from "./Country.module.css";
+import { useContext, useEffect, useState } from 'react';
+import { CountriesContext } from '../CountriesContext';
+import Modal from '../components/Modal';
+import styles from './Country.module.css';
 
 export default function RegionPage({ region }) {
   const {
@@ -19,6 +20,8 @@ export default function RegionPage({ region }) {
     setCountries(allCountries.filter((c) => c.region === region));
   }, [allCountries, region, setCountries]);
 
+  const [selectedCountry, setSelectedCountry] = useState(null);
+
   useEffect(() => {
     setCurrentPage(1);
   }, [countries]);
@@ -29,6 +32,14 @@ export default function RegionPage({ region }) {
   const currentCountries = countries.slice(firstCountryIndex, lastCountryIndex);
   const totalPages = Math.ceil(countries.length / countriesPerPage);
 
+  const openModal = (country) => {
+    setSelectedCountry(country);
+  };
+
+  const closeModal = () => {
+    setSelectedCountry(null);
+  };
+
   return (
     <div className={styles.countriesContainer}>
       {loading && <p>Loading...</p>}
@@ -38,7 +49,11 @@ export default function RegionPage({ region }) {
         <>
           <ul className={styles.countryList}>
             {currentCountries.map((c) => (
-              <li key={c.cca3} className={styles.country}>
+              <li
+                key={c.cca3}
+                className={styles.country}
+                onClick={() => openModal(c)}
+              >
                 <img
                   src={c.flags.png}
                   alt={c.name.common}
@@ -47,18 +62,22 @@ export default function RegionPage({ region }) {
                 <div className={styles.info}>
                   <p className={styles.countryName}>{c.name.common}</p>
                   <p className={styles.capital}>
-                    <strong>Capital:</strong> {c.capital?.[0] || "N/A"}
+                    <strong>Capital:</strong> {c.capital?.[0] || 'N/A'}
                   </p>
                   <p className={styles.region}>
                     <strong>Region:</strong> {c.region}
                   </p>
                   <p className={styles.population}>
-                    <strong>Population:</strong>{" "}
-                    {c.population?.toLocaleString() || "N/A"}
+                    <strong>Population:</strong>{' '}
+                    {c.population?.toLocaleString() || 'N/A'}
                   </p>
                 </div>
 
-                <label htmlFor={`fav-${c.cca3}`} className={styles.favoriteLbl}>
+                <label
+                  htmlFor={`fav-${c.cca3}`}
+                  className={styles.favoriteLbl}
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <input
                     type="checkbox"
                     className={styles.favoriteBtn}
@@ -91,6 +110,43 @@ export default function RegionPage({ region }) {
             </div>
           )}
         </>
+      )}
+
+      {selectedCountry && (
+        <Modal onClose={closeModal}>
+          <div className={styles.modalContent}>
+            <h2>{selectedCountry.name.common}</h2>
+            <img
+              src={selectedCountry.flags.png}
+              alt={selectedCountry.name.common}
+              className={styles.flag}
+              width={200}
+            />
+            <p>
+              <strong>Capital:</strong>
+              {selectedCountry.capital[0] || 'N/A'}
+            </p>
+            <p>
+              <strong>Region:</strong>
+              {selectedCountry.region}
+            </p>
+            <p>
+              <strong>Subregion:</strong>
+              {selectedCountry.subregion || 'N/A'}
+            </p>
+            <p>
+              <strong>Population:</strong>{' '}
+              {selectedCountry.population.toLocaleString || 'N/A'}
+            </p>
+            <p>
+              <strong>Phone code:</strong>
+              {selectedCountry.idd.root}
+              {selectedCountry.idd.suffixes
+                ? selectedCountry.idd.suffixes[0]
+                : ''}
+            </p>
+          </div>
+        </Modal>
       )}
     </div>
   );
