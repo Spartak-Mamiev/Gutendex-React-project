@@ -36,7 +36,7 @@ export default function Favorites() {
   return (
     <div className={styles.countriesContainer}>
       {currentCountries.length === 0 ? (
-        <p>No favorite countries yet.</p>
+        <p className={styles.noFavoritesYet}>No favorite countries yet.</p>
       ) : (
         <>
           <ul className={styles.countryList}>
@@ -51,17 +51,19 @@ export default function Favorites() {
                   alt={c.name.common}
                   className={styles.flag}
                 />
-                <p className={styles.countryName}>{c.name.common}</p>
-                <p className={styles.capital}>
-                  <strong>Capital:</strong> {c.capital?.[0] || 'N/A'}
-                </p>
-                <p className={styles.region}>
-                  <strong>Region:</strong> {c.region}
-                </p>
-                <p className={styles.population}>
-                  <strong>Population:</strong>{' '}
-                  {c.population?.toLocaleString() || 'N/A'}
-                </p>
+                <div className={styles.info}>
+                  <p className={styles.countryName}>{c.name.common}</p>
+                  <p className={styles.capital}>
+                    <strong>Capital:</strong> {c.capital?.[0] || 'N/A'}
+                  </p>
+                  <p className={styles.region}>
+                    <strong>Region:</strong> {c.region}
+                  </p>
+                  <p className={styles.population}>
+                    <strong>Population:</strong>{' '}
+                    {c.population?.toLocaleString() || 'N/A'}
+                  </p>
+                </div>
 
                 <label
                   htmlFor={`fav-${c.cca3}`}

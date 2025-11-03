@@ -77,7 +77,7 @@ export function Header() {
             src="/globe.png"
             alt="globe icon"
             className="logo"
-            width={50}
+            width={35}
           />
         </Link>
 
@@ -98,7 +98,7 @@ export function Header() {
             src="/heart-filled.png"
             alt="favorite icon"
             className="favoriteIcon"
-            width={30}
+            width={20}
           />
           Favorites ({favorites.length})
         </Link>
